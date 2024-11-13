@@ -9,7 +9,7 @@ public class PhoneDirectoryDB {
     private Connection conn;
 
     // Constructor to initialize the connection
-    public PhoneDirectoryDB(String USER,String PASS) throws SQLException, ClassNotFoundException {
+    public PhoneDirectoryDB(String USER, String PASS) throws SQLException, ClassNotFoundException {
         Class.forName(JDBC_DRIVER);
         this.conn = DriverManager.getConnection(DB_URL, USER, PASS);
     }
@@ -47,6 +47,24 @@ public class PhoneDirectoryDB {
         } else {
             return null;
         }
+    }
+
+    // Method to delete an entry by phone number
+    public boolean deleteEntryByPhone(String phone) throws SQLException {
+        String sql = "DELETE FROM directory WHERE phone = ?";
+        PreparedStatement pstmt = conn.prepareStatement(sql);
+        pstmt.setString(1, phone);
+        int rowsAffected = pstmt.executeUpdate();
+        return rowsAffected > 0; // Return true if a row was deleted, false otherwise
+    }
+
+    // Method to delete an entry by name
+    public boolean deleteEntryByName(String name) throws SQLException {
+        String sql = "DELETE FROM directory WHERE name = ?";
+        PreparedStatement pstmt = conn.prepareStatement(sql);
+        pstmt.setString(1, name);
+        int rowsAffected = pstmt.executeUpdate();
+        return rowsAffected > 0; // Return true if a row was deleted, false otherwise
     }
 
     // Close the database connection

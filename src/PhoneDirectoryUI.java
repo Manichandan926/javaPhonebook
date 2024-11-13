@@ -37,8 +37,6 @@ public class PhoneDirectoryUI {
         JPanel cardPanel = new JPanel();
         cardPanel.setLayout(new GridBagLayout()); // Set layout for card panel
         cardPanel.setBackground(new Color(255, 255, 255, 60)); // Semi-transparent white background
-        // cardPanel.setOpaque(false);
-        // cardPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         cardPanel.setPreferredSize(new Dimension(600, 400));
 
         GridBagConstraints gbc = new GridBagConstraints();
@@ -54,7 +52,7 @@ public class PhoneDirectoryUI {
         JButton addButton = new JButton("Add");
         JButton searchByNameButton = new JButton("Search by Name");
         JButton searchByPhoneButton = new JButton("Search by Phone");
-        JButton deleteButton = new JButton("Delete by Name");
+        JButton deleteButton = new JButton("Delete");
 
         resultArea = new JTextArea(10, 30);
         resultArea.setEditable(false);
@@ -84,12 +82,12 @@ public class PhoneDirectoryUI {
         gbc.gridx = 2;
         cardPanel.add(searchByPhoneButton, gbc);
 
-        // gbc.gridx=2;
-        // gbc.gridy=3;
-        // cardPanel.add(deleteButton,gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 3;
+        cardPanel.add(deleteButton, gbc); // Add the delete button
 
         gbc.gridx = 0;
-        gbc.gridy = 3;
+        gbc.gridy = 4;
         gbc.gridwidth = 3;
         gbc.fill = GridBagConstraints.BOTH;
         JScrollPane scrollPane = new JScrollPane(resultArea);
@@ -114,6 +112,12 @@ public class PhoneDirectoryUI {
         searchByPhoneButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 searchByPhone();
+            }
+        });
+
+        deleteButton.addActionListener(new ActionListener() { // Action for delete button
+            public void actionPerformed(ActionEvent e) {
+                deleteEntry();
             }
         });
 
@@ -177,6 +181,36 @@ public class PhoneDirectoryUI {
             }
         } catch (SQLException e) {
             resultArea.setText("Error fetching details: " + e.getMessage());
+        }
+    }
+
+    // Delete button action
+    private void deleteEntry() {
+        String name = nameField.getText();
+        String phone = phoneField.getText();
+
+        if (name.isEmpty() && phone.isEmpty()) {
+            JOptionPane.showMessageDialog(frame, "Please enter a name or phone number to delete.");
+            return;
+        }
+
+        try {
+            boolean deleted;
+            if (!name.isEmpty()) {
+                deleted = phoneDirectoryDB.deleteEntryByName(name);
+            } else {
+                deleted = phoneDirectoryDB.deleteEntryByPhone(phone);
+            }
+
+            if (deleted) {
+                resultArea.setText("Entry deleted successfully!");
+                nameField.setText("");
+                phoneField.setText("");
+            } else {
+                resultArea.setText("No entry found to delete.");
+            }
+        } catch (SQLException e) {
+            resultArea.setText("Error deleting entry: " + e.getMessage());
         }
     }
 }

@@ -16,6 +16,7 @@ public class PhoneDirectoryApp {
             public void run() {
                 try {
                     PhoneDirectoryDB db = new PhoneDirectoryDB(USER,PASS);  
+                    // PhoneDirectoryDB db = new PhoneDirectoryDB();  
                     new PhoneDirectoryUI(db);
                 } catch (SQLException | ClassNotFoundException e) {
                     e.printStackTrace();
@@ -23,6 +24,7 @@ public class PhoneDirectoryApp {
                 }
             }
         });
+        System.out.println();
         sc.close();
     }
 }
