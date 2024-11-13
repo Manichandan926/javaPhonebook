@@ -14,7 +14,6 @@ public class PhoneDirectoryDB {
         this.conn = DriverManager.getConnection(DB_URL, USER, PASS);
     }
 
-    // Method to add an entry to the directory
     public void addEntry(String name, String phone) throws SQLException {
         String sql = "INSERT INTO directory (name, phone) VALUES (?, ?)";
         PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -23,7 +22,6 @@ public class PhoneDirectoryDB {
         pstmt.executeUpdate();
     }
 
-    // Method to search for a phone by name
     public String searchPhoneByName(String name) throws SQLException {
         String sql = "SELECT phone FROM directory WHERE name = ?";
         PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -36,7 +34,6 @@ public class PhoneDirectoryDB {
         }
     }
 
-    // Method to search for a name by phone
     public String searchNameByPhone(String phone) throws SQLException {
         String sql = "SELECT name FROM directory WHERE phone = ?";
         PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -49,22 +46,20 @@ public class PhoneDirectoryDB {
         }
     }
 
-    // Method to delete an entry by phone number
     public boolean deleteEntryByPhone(String phone) throws SQLException {
         String sql = "DELETE FROM directory WHERE phone = ?";
         PreparedStatement pstmt = conn.prepareStatement(sql);
         pstmt.setString(1, phone);
         int rowsAffected = pstmt.executeUpdate();
-        return rowsAffected > 0; // Return true if a row was deleted, false otherwise
+        return rowsAffected > 0; 
     }
 
-    // Method to delete an entry by name
     public boolean deleteEntryByName(String name) throws SQLException {
         String sql = "DELETE FROM directory WHERE name = ?";
         PreparedStatement pstmt = conn.prepareStatement(sql);
         pstmt.setString(1, name);
         int rowsAffected = pstmt.executeUpdate();
-        return rowsAffected > 0; // Return true if a row was deleted, false otherwise
+        return rowsAffected > 0; 
     }
 
     // Close the database connection
