@@ -12,7 +12,6 @@ public class PhoneDirectoryUI {
     private PhoneDirectoryDB phoneDirectoryDB;
     private Image backgroundImage;
 
-    // Constructor to initialize the UI and bind actions
     public PhoneDirectoryUI(PhoneDirectoryDB db) {
         this.phoneDirectoryDB = db;
 
